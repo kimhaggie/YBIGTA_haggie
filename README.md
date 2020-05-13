@@ -74,6 +74,18 @@ cGAN은 따로 데이터를 구해서 구현하지 않고 MNIST 데이터로 실
 
 ## 3.Disco-GAN
 ### 3_1. 구조
-Disco-GAN의 경우에는 2개의 Generator와 2개의 Discriminator를 사용합니다. Generator는 rgb 64x64 사진을 인풋으로 주게되면 64x64이미지를 결과값으로 보여줍니다. 
+Disco-GAN의 경우에는 2개의 Generator와 2개의 Discriminator를 사용합니다. <br> 
+Generator는 rgb 64x64 사진을 인풋으로 주게되면 64x64이미지를 결과값으로 보여줍니다. Generator 내부에는 총 8개의 레이어가 있습니다. 4번째 layer까지는 Conv2d로 사이즈를 줄이고 다음부터는 transconv2d로 사이즈를 늘렸습니다. 그리고 각 레이어마다 batch normalization이 있어서 학습효율을 높였습니다. <br>
+Discriminator는 이미지를 비교해서 fake인지 real인지 구분해 줍니다. Discriminator의 경우 총 5 레이어로 되어있고 특이한 점은 forward함수인데 앞의 Generator의 경우에는 결과만 return해주는데 여기는 각 레이어를 통과하는 feature도 return해줍니다. 이는 후에 loss를 계산하는데 사용되게 됩니다.
 
 <img src="/imgs/disco-gan.png" width="60%" height="60%">
+
+G_ab는 A클래스의 이미지를 통해서 B이미지를 생성합니다. 마찬가지로 G_ba는 B클래스의 이미지를 통해서 A이미지를 생성합니다. D_a,D_b는 각각 Generator로부터 생성된 fake 이미지들을 인풋값으로 사용되었던 real 이미지들과 비교합니다. 기존의 gan과 구별되는 가장 중요한 차이점은 비지도 학습이라는 것입니다. 기존의 gan은 제너레이터로 생성된 결과값이 어떤 데이터인지 알려주는 라벨이 존재해서 모델이 이를 기반으로 학습을 하게 됩니다.
+
+### 3_2. 구현
+학습시킬 이미지로 사과와 바나나 이미지를 kaggle로 부터 불러왔습니다. 학습 초기에는 사과와 바나나이미지를 제대로 생성을 못하지만 학습을 마치고 나면 사과가 가르키는 방향으로 바나나도 같은 방향으로 가르킵니다.
+<img src="/imgs/before.png" width="60%" height="60%">
+<img src="/imgs/after.png" width="60%" height="60%">
+이와 별개로 저희가 직접 사람 이미지를 찍어서 인풋값으로 넣어 봤습니다. 결과는 다음과 같습니다. 어느정도 학습이 잘 된 것 같습니다.
+
+<img src="/imgs/person.png" width="60%" height="60%">
