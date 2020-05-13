@@ -71,3 +71,9 @@ cGAN의 아이디어는 간단합니다. 입력값 z에 이미지 생성에 관�
 cGAN은 따로 데이터를 구해서 구현하지 않고 MNIST 데이터로 실습을 진행했습니다. one-hot encoding한 class label을 조건으로 사용해 원하는 숫자이미지를 생성해보았습니다. Discriminator과 Generator에 조건을 embedding하여 concat할 수 있도록 class를 만들었습니다. 학습된 모델에 label이 조정된 z값을 입력값으로 넣었더니 원하는 숫자의 이미지를 생성해낼 수 있었습니다. 
 
 <img src="/imgs/MNIST_cGAN.png" width="50%" height="50%">
+
+## 3.Disco-GAN
+### 3_1. 구조
+Disco-GAN의 경우에는 2개의 Generator와 2개의 Discriminator를 사용합니다. Generator는 rgb 64x64 사진을 인풋으로 주게되면 64x64이미지를 결과값으로 보여줍니다. 
+
+<img src="/imgs/disco-gan.png" width="60%" height="60%">
